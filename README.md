@@ -206,8 +206,311 @@ public class Test {
 
     
     
+--------------------
   
+  
+  
+어제꺼 발전시킨 코드 쇼핑하는것이 추가됨  
+  
+  
+  
+  
+goods 코드  
+```
+package Market;
 
+public class Goods {
+
+	String name=null;
+	String id =null;
+	int cnt= 0;
+	int price=0;
+	
+	//물건의 이름을 저장하는 메서드
+	public void setting (String name,String id,int cnt,int price) {
+		//this는 자기 자신의 전역변수를 구분할때 사용하는 키워드
+		this.name=name;
+		this.id=id;
+		this.cnt=cnt;
+		this.price=price;
+
+	}
+	
+	public void prt() {
+		System.out.println("이름:"+this.name);
+		System.out.println("아이디:"+this.id);
+		System.out.println("수량:"+this.cnt);
+		System.out.println("단가:"+this.price);
+
+	}
+}
+```
+  
+  
+  
+  
+  
+GoodsManager code  
+```
+package Market;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class GoodsManager {
+
+	// Goods[] gList = new Goods[10];
+	ArrayList<Goods> goodsList = new ArrayList<>();
+	Scanner in = new Scanner(System.in);
+
+	GoodsManager() {
+		// 물건을 관리하는 객체, 물건등록, 수정, 삭제 , 물건1개가 아님. .. . .. .
+		//재호출시 계속 새로운 객체 만들어 전의 객체에 접근 불가여서 안쓰고 메서드로 돌림
+	}
+
+	public void GoodsRun() { //돌린메서드
+		for (;;) {
+
+			menu();
+			int selMenu = in.nextInt();
+			in.nextLine();
+			if (selMenu == 1) {
+				addGoods();
+			} else if (selMenu == 2) {
+				modGoods();
+			} else if (selMenu == 3) {
+				listGoods();
+			} else if (selMenu == 4) {
+				deleteGoods();
+			} else if (selMenu == 5) {
+				searchGoods();
+			} else if (selMenu == 6) {
+				break;
+			}
+		}
+	}
+
+	private void addGoods() {// 물건추가
+		Goods newGoods = new Goods();
+		System.out.println("이름 입력");
+		String name = in.nextLine();
+		System.out.println("아이디입력");
+		String id = in.nextLine();
+		System.out.println("수량입력");
+		int cnt = in.nextInt();
+		in.nextLine();
+		System.out.println("가격입력");
+		int price = in.nextInt();
+		in.nextLine();
+		newGoods.setting(name, id, cnt, price);
+		// 값 저장하기
+//      for (int i = 0; i < gList.length; i++) {
+//         if (gList[i] == null) {
+//            gList[i] = newGoods;
+//            break;
+//         }
+//      }
+		// 어레이 리스트로 교체
+		goodsList.add(newGoods);
+
+	}
+
+	public void listGoods() {
+		// TODO auto-generated method stub
+		for (int i = 0; i < goodsList.size(); i++) {
+			// if (!gList.add(null)) {
+			System.out.println(i + "번 정보----");
+			// gList.get(i).prt();
+			goodsList.get(i).prt();
+			System.out.println("---------------");
+			// }
+		}
+	}
+
+	private void modGoods() {
+		// 이름으로 수정하시오.. 이름으로 수정하는데 수량하고 가격만 수정이 가능하다..
+		System.out.println("<수정> 이름을 입력하세요");
+		String modName = in.nextLine();
+		boolean flag = true;
+		for (int i = 0; i < goodsList.size(); i++) {
+			// if (gList[i] != null) {
+			if (goodsList.get(i).name.equals(modName)) {
+				System.out.println("수량을 입력하세요");
+				int newInt = in.nextInt();
+				in.nextLine();
+				goodsList.get(i).cnt = newInt;
+
+				System.out.println("가격을 입력하세요");
+				newInt = in.nextInt();
+				in.nextLine();
+				goodsList.get(i).price = newInt;
+				flag = false;
+				break;
+				// }
+			}
+		}
+		if (flag) {
+			System.out.println("이름이 없습니다. ");
+		}
+	}
+
+	private void deleteGoods() {
+		// 이름으로 검색하여 삭제.
+		System.out.println("삭제할 이름을 입력하시오");
+		String deletename = in.nextLine();
+		for (int i = 0; i < goodsList.size(); i++) {
+			// if (gList[i] != null) {
+			if (goodsList.get(i).name.equals(deletename)) {
+				// gList[i] = null;
+				goodsList.remove(i); // i는 한칸씩 앞으로 당겨진다
+				System.out.println("삭제합니다.");
+				break;
+			}
+		}
+	}
+
+	private void searchGoods() {
+		System.out.println("검색할 이름을 입력하세요");
+		String searchname = in.nextLine();
+		for (int i = 0; i < goodsList.size(); i++) {
+			if (goodsList.get(i).name.equals(searchname)) {
+				goodsList.get(i).prt();
+				break;
+			}
+		}
+	}
+
+	private void menu() {
+		// TODO auto-generated method stub
+		System.out.println("1. 물건등록");
+		System.out.println("2. 물건수정 ");
+		System.out.println("3. 전체보기");
+		System.out.println("4. 물건삭제");
+		System.out.println("5. 물건검색");
+		System.out.println("6. 이전으로 이동");
+
+		System.out.println("============>");
+
+	}
+}
+```
+  
+  
+  
+  
+  
+MainMenu code (물건관리랑 쇼핑하기까지 추가)  
+```
+package Market;
+
+import java.util.Scanner;
+
+public class MainMenu {
+
+	Scanner in = new Scanner(System.in);
+	GoodsManager gm = new GoodsManager();
+	Member nowUser = new Member(gm);
+	//그래서 한번만 실행 되도록 맨 위에 써줌
+	MainMenu() {
+		for (;;) {
+			menu();
+			int selMenu = in.nextInt();
+			in.nextLine();
+			if (selMenu == 1) {
+				//new GoodsManager();
+				//객체는 호출시마다 새로운 객체를 만들어냄 그래서 이전 객체에 접근
+				//불가
+				gm.GoodsRun();
+			} else if (selMenu == 2) {
+				//new Member();
+				nowUser.goShopping();
+			}
+		}
+	}
+
+	private void menu() {
+		System.out.println("1.물건관리");
+		System.out.println("2.쇼핑하기");
+		
+	}
+
+}
+```
+  
+  
+  
+  
+MainMarket code  
+```
+package Market;
+
+public class MainMarket {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		new MainMenu();
+	}
+
+}
+```
+  
+  
+  
+  
+Member code (쇼핑하는 사람 추가 )  
+```
+package Market;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Member {
+
+	Scanner in =new Scanner(System.in);
+	String name = "Guest";
+	ArrayList<Goods> basket = new ArrayList<>();
+	GoodsManager gm= null;
+	public Member(GoodsManager gm) {
+		this.gm=gm;
+	} //생성자
+	//멤버 클래스는 굿즈매니저 객체를 새로 만들면 안된다(접근이 안되어서) 메인메뉴가 만든 굿즈매니저 객체를 참조해야함
+	//참조하려면 주소를 알아야함.현재 주소를 알고있는 객체는 매인메뉴클래스이다 
+	//그래서 메인메뉴 클래스에서 맴버 객체를 생성할때
+	//굿즈매니져 객체의 주소값을 저장한 참조변수 gm을 매개변수로 넘겨준다. 맴버의 생성자는 gm의 값(굿즈매니저 객체 주소값)을 넘겨받아
+	//자신의 전역변수인 gm2에 저장한다. 이렇게 되면 gm2도 메인메뉴에서 만든 객체의 참조가 가능하다
+	//이것을 쇼핑 기능에서 활용함
+	/*
+	 * 얻을 수 있는 팁
+	 * 객체를 공유하는것은 조금 복잡.누가 객체를 만들것인가 만든 객체를 공유하는것은 어케해야 할 것인가를 이해해야함
+	 * 객체를 공유하는것은 여러개의 참조변수가 같은 객체의 주소값을 가지면 된다.
+	 */
+	public void goShopping() {
+		for(;;) {
+			System.out.println("1.구매하기");
+			System.out.println("2.장바구니");
+			System.out.println("3.이전메뉴");
+			int selMenu = in.nextInt();
+			in.nextLine();
+			if(selMenu==1) {
+				shopping();
+			}else if(selMenu==2) {
+				//viewBasket
+			}else if(selMenu==3) {
+				break;
+			}
+
+		}
+	}
+	
+	private void shopping() {
+		System.out.println("쇼핑공사중");
+		gm.listGoods();
+		
+	}
+
+}
+```
 
   
   
