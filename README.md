@@ -194,8 +194,18 @@ public class Test {
 }
 ```
   ![arraylist](https://user-images.githubusercontent.com/80766275/191395581-4ebb9665-68e2-494a-835d-7ead3cef4e2c.PNG)
-  
-  
+    
+    
+    
+    
+    
+    
+    
+    
+  ![image](https://user-images.githubusercontent.com/80766275/191418816-68a6d166-0903-4d5d-a210-9a1fd8530c53.png)
+
+    
+    
   
 
 
